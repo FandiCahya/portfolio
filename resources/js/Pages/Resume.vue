@@ -38,7 +38,7 @@
                                     Web Development, Android Development, and Data Science.</em></p>
                             <ul style="list-style: disc; padding-left: 20px;">
                                 <li>BandarkedungMulyo, Jombang</li>
-                                <li>+62-85183305689</li>
+                                <li>+62-85235538116</li>
                                 <li>fandicahya56@gmail.com</li>
                             </ul>
                         </div>

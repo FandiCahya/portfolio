@@ -58,7 +58,7 @@
 
                 <div class="row gy-4 justify-content-center">
                     <div class="col-lg-4">
-                        <img src="assets/img/Profile-img.png" class="img-fluid" alt=""
+                        <img src="assets/img/Profile-img.webp" class="img-fluid" alt=""
                             style="max-width: 300px; height: auto; ">
                     </div>
                     <div class="col-lg-8 content">

@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Project;
+
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -27,6 +29,14 @@ Route::get('/resume', function () {
 })->name('resume');
 
 Route::get('/portfolio', function () {
-    return Inertia::render('Portfolio'); // File: resources/js/Pages/Portfolio.vue
+    return Inertia::render('Portfolio', [
+        'projects' => Project::all() // Kirim semua proyek
+    ]);
 })->name('portfolio');
+
+Route::get('/portfolio/{id}', function ($id) {
+    return Inertia::render('PortfolioDetails', [
+        'project' => Project::findOrFail($id) // Kirim satu proyek
+    ]);
+})->name('portfolio.details');
 
