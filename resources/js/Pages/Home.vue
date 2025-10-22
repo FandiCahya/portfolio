@@ -1,22 +1,11 @@
 <script setup>
-    import {
-        Head,
-        Link
-    } from '@inertiajs/vue3';
-    import {
-        ref
-    } from 'vue';
-
-    // State untuk mengontrol visibilitas menu dropdown mobile
-    const open = ref(false);
+import { Head, Link } from '@inertiajs/vue3';
+// HANYA ini yang Anda perlukan
 </script>
 
+
 <template>
-    <!-- Hero Section -->
     <section id="hero" class="hero section">
-
-        <img src="assets/img/bghome.webp" alt="" data-aos="fade-in">
-
         <div class="container text-center" data-aos="zoom-out" data-aos-delay="100">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -26,6 +15,5 @@
                 </div>
             </div>
         </div>
-
-    </section><!-- /Hero Section -->
-</template>
+    </section>
+    </template>

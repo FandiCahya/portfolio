@@ -1,4 +1,6 @@
 <script setup>
+import Layout from '@/Shared/Layout.vue'; // Impor layout
+import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import Isotope from 'isotope-layout';
 import imagesLoaded from 'imagesloaded';

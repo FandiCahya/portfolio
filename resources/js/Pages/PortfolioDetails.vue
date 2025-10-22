@@ -1,4 +1,6 @@
 <script setup>
+import Layout from '@/Shared/Layout.vue'; // Impor layout
+import { Head } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 import Swiper from 'swiper';
 // import 'swiper/css';

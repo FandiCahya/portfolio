@@ -1,8 +1,6 @@
 <script setup>
-    import {
-        Head,
-        Link
-    } from '@inertiajs/vue3';
+import Layout from '@/Shared/Layout.vue'; // Impor layout
+import { Head } from '@inertiajs/vue3';
     import {
         ref
     } from 'vue';
