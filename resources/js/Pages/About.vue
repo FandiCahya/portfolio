@@ -75,10 +75,10 @@
                                     <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span>07 February
                                             2002</span></li>
                                     <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong>
-                                        <span>www.example.com</span>
+                                        <span>cahyame.my.id</span>
                                     </li>
                                     <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong>
-                                        <span>+6285183305689</span>
+                                        <span>+6285235528116</span>
                                     </li>
                                     <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>Jombang,
                                             Indonesia</span></li>
