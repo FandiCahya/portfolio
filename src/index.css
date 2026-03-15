@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ec5b13;
+  --color-accent-cyan: #00f2ff;
+  --color-accent-violet: #7000ff;
+  --color-bg-dark: #000000;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glow-cyan {
+    box-shadow: 0 0 25px rgba(0, 242, 255, 0.4), 0 0 50px rgba(0, 242, 255, 0.1);
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 25px rgba(236, 91, 19, 0.4), 0 0 50px rgba(236, 91, 19, 0.1);
+  }
+
+  .glow-violet {
+    box-shadow: 0 0 25px rgba(112, 0, 255, 0.4), 0 0 50px rgba(112, 0, 255, 0.1);
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+  }
+
+  .text-glow-primary {
+    text-shadow: 0 0 15px rgba(236, 91, 19, 0.6);
+  }
+
+  .mesh-bg {
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(112, 0, 255, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(0, 242, 255, 0.15) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(236, 91, 19, 0.05) 0px, transparent 60%);
+    background-color: #000000;
+  }
+
+  /* Custom Scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  .scrollbar-thumb-primary\/30::-webkit-scrollbar-thumb {
+    background-color: rgba(236, 91, 19, 0.3);
+    border-radius: 3px;
+  }
+
+  .scrollbar-thumb-primary\/30::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(236, 91, 19, 0.5);
+  }
+
+  .scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Modal Scrollbar */
+  .modal-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .modal-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 3px;
+  }
+
+  .modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}

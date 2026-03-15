@@ -1,0 +1,134 @@
+{
+  "navbar": {
+    "brand": "Fandi.eth",
+    "home": "HOME",
+    "experience": "EXPERIENCE",
+    "projects": "PROJECTS",
+    "skills": "SKILLS",
+    "hireMe": "HIRE ME"
+  },
+  "hero": {
+    "status": "Junior Software Engineer",
+    "title": "Architecting",
+    "titleHighlight": "Trust",
+    "titleEnd": "Digitally.",
+    "description": "Hi, I'm Muhammad Fandi Nurcahya. Graduate of D3 Information Management. Experienced in full-stack application development through two internship programs, with expertise in Laravel, Flutter and Django frameworks.",
+    "viewProjects": "VIEWS PROJECTS"
+  },
+  "experience": {
+    "title": "Work Experiences",
+    "subtitle": "Professional journey in software development.",
+    "experiences": [      
+        {
+        "role": "IT Programmer",
+        "company": "PT. Multi Spunindo Jaya Tbk",
+        "period": "December 2025 - Juny 2026",
+        "description": "Designing and developing full-stack internal web applications using the Laravel framework to digitize core business operations. Key projects include the development of a precise color-matching system, Bill of Materials (BOM) management, and BOM data processing integrated with the SAP system."
+      },
+      {
+        "role": "Full Stack Developer Intern",
+        "company": "LifeMedia, Yogyakarta",
+        "period": "February 2025 - Juny 2025",
+        "description": "Involved in back-end development for software application submissions. Optimized SQL queries to improve application response speed by up to 20%. Developed REST API endpoints using Laravel and ."
+      },
+      {
+        "role": "Full Stack Developer Intern",
+        "company": "PT. Cyber Olympus, Yogyakarta",
+        "period": "Juny 2024 - August 2024",
+        "description": "Developing and managing REST API endpoints using Laravel. Designing relational database schemas (MySQL) to ensure data integrity."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "viewProject": "VIEW PROJECT",
+    "projects": [
+      {
+        "title": "Monitoring Pande Besi",
+        "category": "Mobile App",
+        "description": "Iron Knife Monitoring Application is an advanced solution designed to monitor various important parameters in the knife manufacturing industry. This application is built using Flutter, a framework that enables cross-platform application development with an attractive and responsive user interface. We collaborated with partners in Tulungagung for implementation and integration of this solution.",
+        "details": {
+          "status": "Completed",
+          "type": "Mobile Application",
+          "technologies": ["Flutter", "Dart", "REST API", "Firebase"]
+        }
+      },
+      {
+        "title": "Booking Gym App",
+        "category": "Web & Mobile App",
+        "description": "Mobile-based Gym Booking application with Flutter connected to Laravel REST API as backend. Main features include user registration, gym schedule booking, and admin reports.",
+        "details": {
+          "status": "Completed",
+          "type": "Mobile and Web Application",
+          "technologies": ["Flutter", "Dart", "Laravel", "REST API", "MySQL"]
+        }
+      },
+      {
+        "title": "SIMPLE",
+        "category": "Web & Mobile App",
+        "description": "SIMPLE is a web and mobile-based application used for the process of submitting, developing, testing, and approving software within an organization. This application is designed with Laravel and equipped with user management features, tiered approval, and downloadable reports.",
+        "details": {
+          "status": "Completed",
+          "type": "Mobile and Web Application",
+          "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "Flutter", "Dart"],
+          "duration": "4 months",
+          "team": "3 developers"
+        }
+      },
+      {
+        "title": "SI-Respan",
+        "category": "Web Application",
+        "description": "SI-RESPAN is a web-based application built with the Django framework to assist in determining survey respondents for food prices. This application facilitates the process of analyzing and visualizing commodity data from various markets.",
+        "details": {
+          "status": "Completed",
+          "type": "Web Application",
+          "technologies": ["Django", "Python", "MySQL", "JavaScript", "Chart.js"]
+        }
+      },
+      {
+        "title": "CCTV Monitoring System",
+        "category": "Web Application",
+        "description": "The CCTV Monitoring System is a web-based application designed to monitor and manage CCTV camera systems in school environments. This application allows users to view live footage and manage camera settings and data within the school environment.",
+        "details": {
+          "status": "Completed",
+          "type": "Web Application",
+          "technologies": ["Laravel", "PHP", "MySQL", "JavaScript"]
+        }
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "groups": {
+      "languages": "Languages",
+      "frameworks": "Frameworks",
+      "databaseApi": "Database & API",
+      "tools": "Tools"
+    }
+  },
+  "education": {
+    "title": "Education",
+    "school": "Politeknik Negeri Malang",
+    "period": "Aug 2022 - Aug 2025",
+    "major": "Information Management",
+    "gpa": "GPA 3.82 / 4.00"
+  },
+  "additional": {
+    "languages": {
+      "title": "Languages",
+      "indonesian": "Indonesia (Native)",
+      "english": "English (Professional)"
+    },
+    "certifications": {
+      "title": "Certifications",
+      "list": [
+        "BNSP Software Programming",
+        "BNSP Data Scientist"
+      ]
+    }
+  },
+  "footer": {
+    "name": "Fandi Nurcahya",
+    "copyright": "© 2025 Muhammad Fandi Nurcahya. Jombang, Jawa Timur."
+  }
+}
