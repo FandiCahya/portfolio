@@ -33,11 +33,14 @@ import { getProjectImages } from './data/projectImages';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'en' ? 'id' : 'en';
     i18n.changeLanguage(newLang);
   };
+
+  const navItems = ['HOME', 'EXPERIENCE', 'PROJECTS', 'SKILLS'];
 
   return (
     <header className="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-6 md:px-20 py-4 glass sticky top-0 z-50">
@@ -47,33 +50,75 @@ const Navbar = () => {
         </div>
         <h2 className="text-white text-xl font-bold leading-tight tracking-tight uppercase">{t('navbar.brand')}</h2>
       </div>
-      <div className="flex flex-1 justify-end gap-10 items-center">
+
+      <div className="flex flex-1 justify-end items-center gap-4 md:gap-10">
         <nav className="hidden md:flex items-center gap-8">
-          {['HOME', 'EXPERIENCE', 'PROJECTS', 'SKILLS'].map((item) => (
-            <a 
+          {navItems.map((item) => (
+            <a
               key={item}
-              className="text-slate-300 hover:text-primary transition-colors text-sm font-medium tracking-wider" 
+              className="text-slate-300 hover:text-primary transition-colors text-sm font-medium tracking-wider"
               href={`#${item.toLowerCase()}`}
             >
               {t(`navbar.${item.toLowerCase()}`)}
             </a>
           ))}
         </nav>
-        <button 
+
+        <button
           onClick={toggleLanguage}
-          className="flex min-w-10 cursor-pointer items-center justify-center rounded-full h-11 px-3 bg-white/10 text-white text-xs font-black tracking-widest border border-white/30 hover:brightness-125 transition-all mr-4"
+          className="flex min-w-10.5 sm:min-w-13 cursor-pointer items-center justify-center rounded-full h-11 px-3 bg-white/10 text-white text-xs font-black tracking-widest border border-white/30 hover:brightness-125 transition-all"
           title={i18n.language === 'en' ? 'Switch to Indonesian' : 'Switch to English'}
         >
           <Languages className="w-4 h-4" />
         </button>
-        <button 
+
+        <button
           onClick={() => window.location.href = 'mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda'}
-          className="flex min-w-35 cursor-pointer items-center justify-center rounded-full h-11 px-6 bg-primary text-white text-xs font-black tracking-widest glow-primary border border-white/30 hover:brightness-125 transition-all"
+          className="hidden sm:flex items-center justify-center rounded-full h-11 px-6 bg-primary text-white text-xs font-black tracking-widest glow-primary border border-white/30 hover:brightness-125 transition-all whitespace-nowrap"
         >
           <Mail className="w-4 h-4 mr-2" />
           <span className="truncate">{t('navbar.hireMe')}</span>
         </button>
+
+        <button
+          onClick={() => setMenuOpen((prev) => !prev)}
+          className="flex md:hidden items-center justify-center rounded-full h-11 w-11 bg-white/10 text-white border border-white/30 hover:bg-white/20 transition-all"
+          aria-label="Open navigation menu"
+        >
+          <Share2 className="w-5 h-5" />
+        </button>
       </div>
+
+      {menuOpen && (
+        <div className="absolute right-6 top-full mt-3 w-[calc(100vw-3rem)] max-w-sm rounded-3xl border border-white/10 bg-slate-950/95 backdrop-blur-xl p-4 shadow-2xl md:hidden">
+          <div className="flex flex-col gap-3">
+            {navItems.map((item) => (
+              <a
+                key={item}
+                onClick={() => setMenuOpen(false)}
+                href={`#${item.toLowerCase()}`}
+                className="block rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 hover:bg-white/5 transition-colors"
+              >
+                {t(`navbar.${item.toLowerCase()}`)}
+              </a>
+            ))}
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-100 bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+            >
+              <Languages className="w-4 h-4" />
+              {i18n.language === 'en' ? 'ID' : 'EN'}
+            </button>
+            <button
+              onClick={() => window.location.href = 'mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda'}
+              className="flex items-center justify-center rounded-2xl px-4 py-3 bg-primary text-white text-sm font-semibold tracking-widest hover:brightness-110 transition-all"
+            >
+              <Mail className="w-4 h-4 mr-2" />
+              {t('navbar.hireMe')}
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
@@ -104,11 +149,11 @@ const Hero = () => {
             {t('hero.description')}
           </p>
         </div>
-        <div className="flex gap-4">
-          <a href="#projects" className="flex min-w-45 cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-white text-black text-sm font-bold tracking-wider hover:bg-accent-cyan hover:glow-cyan transition-all no-underline">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <a href="#projects" className="flex w-full sm:w-auto cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-white text-black text-sm font-bold tracking-wider hover:bg-accent-cyan hover:glow-cyan transition-all no-underline">
             {t('hero.viewProjects')}
           </a>
-          <button className="flex w-14 h-14 items-center justify-center rounded-xl glass text-white hover:text-primary hover:border-primary/50 transition-all border border-white/10">
+          <button className="flex w-full sm:w-14 h-14 items-center justify-center rounded-xl glass text-white hover:text-primary hover:border-primary/50 transition-all border border-white/10">
             <Terminal className="w-6 h-6" />
           </button>
         </div>
@@ -245,7 +290,7 @@ const Skills = () => {
   );
 };
 
-const ProjectCard = ({ title, category, description, image, colorClass, delay, onViewProject }: any) => {
+const ProjectCard = ({ title, category, description, image, colorClass, delay, onViewProject, projectUrl }: any) => {
   const { t } = useTranslation();
 
   return (
@@ -254,7 +299,7 @@ const ProjectCard = ({ title, category, description, image, colorClass, delay, o
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay, duration: 0.6 }}
-      className={`group relative overflow-hidden rounded-3xl glass border border-white/10 flex flex-col hover:border-${colorClass}/50 transition-all duration-300 animate-float`}
+      className={`group relative overflow-hidden rounded-3xl glass border border-white/10 flex flex-col hover:border-${colorClass}/50 transition-all duration-300 animate-float min-h-104 md:min-h-112`}
       style={{ animationDelay: `${delay * 2}s` }}
     >
       <div className="absolute inset-0 bg-contain bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105" 
@@ -262,20 +307,32 @@ const ProjectCard = ({ title, category, description, image, colorClass, delay, o
              backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.9) 100%), url("${image}")` 
            }}>
       </div>
-      <div className="relative mt-auto p-8 flex justify-between items-end min-h-100">
-        <div>
-          <span className={`text-accent-${colorClass === 'cyan' ? 'cyan' : 'violet'} text-xs font-bold tracking-widest uppercase mb-2 block`}>
+      <div className="relative mt-auto p-6 md:p-8 flex flex-col gap-4 justify-end min-h-88">
+        <div className="absolute inset-x-0 bottom-0 top-0 rounded-3xl bg-linear-to-t from-slate-950/95 via-slate-950/40 to-transparent pointer-events-none" />
+        <div className="relative z-10">
+          <span className="text-primary text-xs font-bold tracking-widest uppercase mb-2 block">
             {category}
           </span>
-          <h3 className="text-white text-3xl font-bold mb-2">{title}</h3>
-          <p className="text-slate-300 text-sm max-w-md">{description}</p>
+          <h3 className="text-white text-2xl md:text-3xl font-bold mb-3">{title}</h3>
         </div>
-        <button 
-          onClick={onViewProject}
-          className="flex items-center gap-2 px-6 py-3 text-white rounded-xl font-bold text-xs transition-all group-hover:-translate-y-2 border border-white/30 hover:border-white/60 cursor-pointer"
-        >
-          {t('projects.viewProject')} <ArrowUpRight className="w-4 h-4" />
-        </button>
+        <div className="relative z-10 flex flex-col sm:flex-row gap-3">
+          <button 
+            onClick={onViewProject}
+            className="flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3 text-white rounded-xl font-bold text-xs transition-all group-hover:-translate-y-2 border border-white/30 hover:border-white/60 cursor-pointer"
+          >
+            {t('projects.viewProject')} <ArrowUpRight className="w-4 h-4" />
+          </button>
+          {projectUrl && (
+            <a
+              href={projectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3 text-primary rounded-xl font-bold text-xs transition-all group-hover:-translate-y-2 border border-primary/40 bg-primary/10 hover:bg-primary/20"
+            >
+              {t('projects.openUrl')} <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+        </div>
       </div>
     </motion.div>
   );
@@ -297,6 +354,8 @@ const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void 
   useEffect(() => {
     setActiveImageIndex(0);
   }, [project]);
+
+  const isVideoUrl = (url: string) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
 
   const nextImage = () => {
     if (project.images && project.images.length > 1) {
@@ -337,13 +396,22 @@ const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void 
 
         {/* Modal Content */}
         <div className="p-8">
-          {/* Project Image Gallery */}
+          {/* Project Media Gallery */}
           <div className="relative w-full h-80 md:h-96 rounded-2xl overflow-hidden mb-4 group bg-slate-800 flex items-center justify-center">
-            <img
-              src={project.images?.[activeImageIndex] ?? `https://picsum.photos/seed/project${project.title.replace(/\s+/g, '').toLowerCase()}/1200/600`}
-              alt={project.title}
-              className="max-w-full max-h-full object-contain transition-all duration-300"
-            />
+            {project.images?.[activeImageIndex] && isVideoUrl(project.images[activeImageIndex]) ? (
+              <video
+                src={project.images[activeImageIndex]}
+                controls
+                muted
+                className="max-w-full max-h-full object-contain transition-all duration-300"
+              />
+            ) : (
+              <img
+                src={project.images?.[activeImageIndex] ?? `https://picsum.photos/seed/project${project.title.replace(/\s+/g, '').toLowerCase()}/1200/600`}
+                alt={project.title}
+                className="max-w-full max-h-full object-contain transition-all duration-300"
+              />
+            )}
             <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent pointer-events-none" />
 
             {/* Navigation Arrows */}
@@ -387,11 +455,17 @@ const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void 
                       : 'border-white/20 hover:border-white/40'
                   }`}
                 >
-                  <img
-                    src={img}
-                    alt={`${project.title} screenshot ${idx + 1}`}
-                    className="w-24 h-16 object-contain bg-slate-700"
-                  />
+                  {isVideoUrl(img) ? (
+                    <div className="relative w-24 h-16 bg-slate-700 flex items-center justify-center text-white text-xs font-semibold">
+                      VIDEO
+                    </div>
+                  ) : (
+                    <img
+                      src={img}
+                      alt={`${project.title} screenshot ${idx + 1}`}
+                      className="w-24 h-16 object-contain bg-slate-700"
+                    />
+                  )}
                   {idx === activeImageIndex && (
                     <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
                       <div className="w-3 h-3 bg-primary rounded-full"></div>
@@ -418,6 +492,17 @@ const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void 
                 {project.category}
               </span>
               <h2 className="text-white text-3xl md:text-4xl font-bold mb-4">{project.title}</h2>
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-all mb-4"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  {t('projects.openUrl')}
+                </a>
+              )}
             </div>
 
             <div className="prose prose-invert max-w-none">
@@ -648,6 +733,7 @@ export default function App() {
                   colorClass={currentProjectIndex % 2 === 0 ? "cyan" : "violet"}
                   delay={0.1}
                   onViewProject={() => openProjectModal(projects[currentProjectIndex])}
+                  projectUrl={projects[currentProjectIndex].url}
                 />
               </motion.div>
             </div>

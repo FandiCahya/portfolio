@@ -42,6 +42,7 @@
   "projects": {
     "title": "Proyek Unggulan",
     "viewProject": "LIHAT PROYEK",
+    "openUrl": "Buka URL",
     "projects": [
       {
         "title": "Monitoring Pande Besi",
@@ -51,7 +52,8 @@
           "status": "Selesai",
           "type": "Aplikasi Mobile",
           "technologies": ["Flutter", "Dart", "REST API", "Firebase"]
-        }
+        },
+        "url": "https://github.com/FandiCahya"
       },
       {
         "title": "Booking Gym App",
@@ -61,7 +63,8 @@
           "status": "Selesai",
           "type": "Aplikasi Website & Mobile",
           "technologies": ["Flutter", "Dart", "Laravel", "REST API", "MySQL"]
-        }
+        },
+        "url": "https://github.com/FandiCahya"
       },
       {
         "title": "SIMPLE",
@@ -71,7 +74,8 @@
           "status": "Selesai",
           "type": "Aplikasi Website & Mobile",
           "technologies": ["Laravel", "PHP", "MySQL", "JavaScript", "Flutter", "Dart"]
-        }
+        },
+        "url": "https://github.com/FandiCahya"
       },
       {
         "title": "SI-Respan",
@@ -81,7 +85,8 @@
           "status": "Selesai",
           "type": "Aplikasi Website",
           "technologies": ["Django", "Python", "MySQL", "JavaScript", "Chart.js"]
-        }
+        },
+        "url": "https://sirespan-dkppkotakediri.my.id/"
       },
       {
         "title": "CCTV Monitoring System",
@@ -91,7 +96,19 @@
           "status": "Selesai",
           "type": "Aplikasi Website",
           "technologies": ["Laravel", "PHP", "MySQL", "JavaScript"]
-        }
+        },
+        "url": "https://github.com/FandiCahya"
+      },
+      {
+        "title": "Manku",
+        "category": "Aplikasi Website & Mobile",
+        "description": "Manku adalah aplikasi manajemen keuangan yang simpel dan intuitif, dirancang untuk membantu Anda mencatat pendapatan, mengelola pengeluaran harian, dan mencapai tujuan finansial Anda dengan mudah.",
+        "details": {
+          "status": "Selesai",
+          "type": "Aplikasi Website & Mobile",
+          "technologies": ["Django", "Flutter", "PostgreSQL", "Docker","REST API","Vercel","Dart"]
+        },
+        "url": "https://manku-flutter.vercel.app/"
       }
     ]
   },
