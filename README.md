@@ -1,20 +1,52 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Portofolio Web - Muhammad Fandi Nurcahya
 
-# Run and deploy your AI Studio app
+Portofolio web pribadi yang menampilkan profil, pengalaman kerja, projek unggulan, keterampilan, pendidikan, serta kontak saya sebagai Junior Software Engineer.
 
-This contains everything you need to run your app locally.
+## Fitur
+- Tampilan modern dan responsif
+- Section pengalaman kerja dan pendidikan
+- Daftar projek unggulan dengan preview visual
+- Tombol akses URL proyek
+- Dukungan bahasa Indonesia dan Inggris
 
-View your app in AI Studio: https://ai.studio/apps/d356963c-844f-4642-866b-e626e7158643
+## Teknologi yang Digunakan
+- React
+- TypeScript
+- Vite
+- React i18next
+- Framer Motion / Motion
+- Lucide React
 
-## Run Locally
+## Menjalankan Secara Lokal
+Pastikan Node.js sudah terinstall terlebih dahulu.
 
-**Prerequisites:**  Node.js
+1. Install dependency:
+   ```bash
+   npm install
+   ```
+2. Jalankan development server:
+   ```bash
+   npm run dev
+   ```
+3. Buka browser di:
+   ```text
+   http://localhost:5173
+   ```
 
+## Build Proyek
+Untuk membuat versi production:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm run build
+```
+
+## Struktur Folder Utama
+- src/App.tsx : komponen utama halaman portofolio
+- src/locales : data teks untuk bahasa Indonesia dan Inggris
+- src/data/projectImages.ts : mapping gambar dan media projek
+- src/assets : gambar dan video projek
+
+## Kontak
+- Email: fandicahya56@gmail.com
+- GitHub: https://github.com/FandiCahya
+- LinkedIn: https://www.linkedin.com/in/muhammad-fandi-nurcahya-1061041b7/
