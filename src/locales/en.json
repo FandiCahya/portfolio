@@ -8,11 +8,11 @@
     "hireMe": "HIRE ME"
   },
   "hero": {
-    "status": "Junior Software Engineer",
+    "status": "Software Engineer",
     "title": "Architecting",
     "titleHighlight": "Trust",
     "titleEnd": "Digitally.",
-    "description": "Hi, I'm Muhammad Fandi Nurcahya. Graduate of D3 Information Management. Experienced in full-stack application development through two internship programs, with expertise in Laravel, Flutter and Django frameworks.",
+    "description": "I am a Software Engineer passionate about engineering clean, scalable, and user-centric digital solutions. With a solid academic foundation in Informatics Management and hands-on industry experience through intensive development programs, I specialize in bridging the gap between complex server-side logic and engaging user interfaces.",
     "viewProjects": "VIEWS PROJECTS"
   },
   "experience": {
@@ -117,7 +117,7 @@
   "skills": {
     "title": "Skills",
     "groups": {
-      "languages": "Languages",
+      "languages": "Languages Programming",
       "frameworks": "Frameworks",
       "databaseApi": "Database & API",
       "tools": "Tools"
@@ -145,7 +145,7 @@
     }
   },
   "footer": {
-    "name": "Fandi Nurcahya",
+    "name": "Fandi Cahya",
     "copyright": "© 2025 Muhammad Fandi Nurcahya. Jombang, Jawa Timur."
   }
 }

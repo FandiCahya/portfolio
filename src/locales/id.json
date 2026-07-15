@@ -8,11 +8,11 @@
     "hireMe": "REKRUT SAYA"
   },
   "hero": {
-    "status": "Junior Software Engineer",
+    "status": "Software Engineer",
     "title": "Membangun",
     "titleHighlight": "Kepercayaan",
     "titleEnd": "di Era Digital.",
-    "description": "Hai, saya Muhammad Fandi Nurcahya. Lulusan D3 Manajemen Informatika. Berpengalaman dalam pengembangan aplikasi full-stack melalui dua program magang, dengan keahlian di framework Laravel, Flutter dan Django.",
+    "description": "Saya adalah seorang Pengembang Aplikasi yang berfokus pada perancangan solusi digital yang utuh, fungsional, dan ramah pengguna. Dengan fondasi akademis di bidang Manajemen Informatika serta pengalaman praktis terjun langsung di industri, saya terbiasa menangani siklus pengembangan perangkat lunak dari perancangan database hingga tata letak antarmuka.",
     "viewProjects": "LIHAT PROYEK"
   },
   "experience": {
@@ -143,7 +143,7 @@
     }
   },
   "footer": {
-    "name": "Fandi Nurcahya",
+    "name": "Fandi Cahya",
     "copyright": "© 2025 Muhammad Fandi Nurcahya. Jombang, Jawa Timur."
   }
 }

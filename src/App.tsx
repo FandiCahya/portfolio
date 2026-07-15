@@ -250,11 +250,32 @@ const Education = () => {
 const Skills = () => {
   const { t } = useTranslation();
   const skillGroups = [
-    { title: t('skills.groups.languages'), skills: ['Python', 'JavaScript','Kotlin','Dart','PHP'], icon: <Globe className="w-5 h-5" /> },
-    { title: t('skills.groups.frameworks'), skills: ['Laravel', 'Django','Flutter'], icon: <Code className="w-5 h-5" /> },
-    { title: t('skills.groups.databaseApi'), skills: ['MySQL', 'REST API'], icon: <Database className="w-5 h-5" /> },
-    { title: t('skills.groups.tools'), skills: ['Git', 'GitHub','Gitlab'], icon: <Terminal className="w-5 h-5" /> }
-  ];
+  { 
+    title: t('skills.groups.languages'), 
+    skills: ['Python', 'JavaScript', 'PHP', 'Kotlin', 'Dart'], 
+    icon: <Globe className="w-5 h-5" /> 
+  },
+  { 
+    title: t('skills.groups.frameworks'), 
+    skills: ['Laravel', 'Django', 'Flutter', 'React.js', 'Bootstrap'], 
+    icon: <Code className="w-5 h-5" /> 
+  },
+  { 
+    title: t('skills.groups.databaseApi'), 
+    skills: ['MySQL', 'PostgreSQL', 'REST API', 'Supabase', 'Firebase'], 
+    icon: <Database className="w-5 h-5" /> 
+  },
+  { 
+    title: t('skills.groups.tools'), 
+    skills: ['Git', 'GitHub', 'GitLab', 'Docker', 'Postman'], 
+    icon: <Terminal className="w-5 h-5" /> 
+  },
+  { 
+    title: t('others'),
+    skills: ['Roblox Studio'], 
+    icon: <Cpu className="w-5 h-5" /> 
+  }
+];
 
   return (
     <section id="skills" className="mb-24">
