@@ -134,7 +134,7 @@ const Hero = () => {
   const handleLeave = () => setCursor((c) => ({ ...c, active: false }));
 
   return (
-    <section id="home" className="relative pt-28 md:pt-36 pb-20 md:pb-28">
+    <section id="home" className="relative pt-24 md:pt-32 pb-10 md:pb-14">
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-primary/10 blur-[120px] rounded-full opacity-60" />
         <div className="absolute top-40 right-0 w-[400px] h-[300px] bg-accent/10 blur-[120px] rounded-full opacity-50" />
@@ -221,7 +221,7 @@ const WorkExperience = () => {
   const experiences = (t('experience.experiences', { returnObjects: true }) as any[]) || [];
 
   return (
-    <section id="experience" className="py-16 md:py-24">
+    <section id="experience" className="py-10 md:py-14">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
         <SectionHeading eyebrow="Career" title={t('experience.title')} subtitle={t('experience.subtitle')} />
         <div className="relative">
@@ -407,7 +407,7 @@ const Skills = () => {
   const skillGroups = baseGroups;
 
   return (
-    <section id="skills" className="py-16 md:py-24">
+    <section id="skills" className="py-10 md:py-14">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
         <SectionHeading eyebrow="Expertise" title={t('skills.title')} />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
@@ -433,7 +433,7 @@ const Skills = () => {
 const Education = () => {
   const { t } = useTranslation();
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-10 md:py-14">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
         <SectionHeading eyebrow="Background" title={t('education.title')} />
         <motion.div {...fadeUp} className="panel rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:items-center">
@@ -459,7 +459,7 @@ const AdditionalInfo = () => {
   const certifications = (t('additional.certifications.list', { returnObjects: true }) as string[]) || [];
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-10 md:py-14">
       <div className="max-w-6xl mx-auto px-5 md:px-8">
         <SectionHeading eyebrow="More" title={t('additional.languages.title') + ' & ' + t('additional.certifications.title')} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
@@ -655,7 +655,7 @@ export default function App() {
         <Hero />
         <WorkExperience />
 
-        <section id="projects" className="py-16 md:py-24">
+        <section id="projects" className="py-10 md:py-14">
           <div className="max-w-6xl mx-auto px-5 md:px-8">
             <SectionHeading eyebrow="Selected Work" title={t('projects.title')} />
             {projects.length > 0 && featured ? (
