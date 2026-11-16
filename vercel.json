@@ -1,14 +1,3 @@
 ﻿{
-  "redirects": [
-    {
-      "source": "/en",
-      "destination": "/en/",
-      "permanent": true
-    },
-    {
-      "source": "/id",
-      "destination": "/id/",
-      "permanent": true
-    }
-  ]
+  "trailingSlash": true
 }
