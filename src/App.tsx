@@ -30,6 +30,8 @@ import {
   Award,
 } from 'lucide-react';
 
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 import { getProjectImages } from './data/projectImages';
 import AdminDashboard from './components/AdminDashboard';
 import profilePhoto from './assets/images/profile/foto1.png';
@@ -636,6 +638,8 @@ export default function App() {
       {showModal && selectedProject && (
         <ProjectModal project={selectedProject} onClose={closeModal} />
       )}
+      <SpeedInsights />
+      <Analytics />
     </div>
   );
 }
