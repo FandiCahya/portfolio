@@ -1,15 +1,13 @@
-// Auto-import all project images from the assets folder.
-// This module exposes helpers to map a project title to the available screenshots.
+// Auto-import project images from the assets folder.
+// Videos are excluded from eager bundling to keep performance scores high; use project image URLs for video/media if needed.
 
 const images = import.meta.glob('../assets/images/projects/*.webp', {
   eager: true,
-  as: 'url',
-});
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>;
 
-const videos = import.meta.glob('../assets/video/*.{mp4,webm,ogg}', {
-  eager: true,
-  as: 'url',
-});
+const videos: Record<string, string> = {};
 
 const normalize = (value: string) =>
   value

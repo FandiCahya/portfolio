@@ -35,6 +35,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { getProjectImages } from './data/projectImages';
 import AdminDashboard from './components/AdminDashboard';
 import profilePhoto from './assets/images/profile/foto1.png';
+import { applySeo, getLangFromPath, type SiteLang } from './utils/seo';
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -64,7 +65,9 @@ const Navbar = () => {
   }, []);
 
   const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'en' ? 'id' : 'en');
+    const nextLang: SiteLang = i18n.language === 'en' ? 'id' : 'en';
+    const target = nextLang === 'id' ? '/id/' : '/en/';
+    window.location.assign(`${target}${window.location.hash}`);
   };
 
   const navItems = ['home', 'experience', 'projects', 'skills'];
@@ -88,8 +91,8 @@ const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-2">
-          <button onClick={toggleLanguage} className="h-9 px-3 rounded-full border border-white/10 bg-white/[0.03] text-xs font-semibold text-zinc-300 hover:text-white hover:border-white/20 transition flex items-center gap-1.5" title={i18n.language === 'en' ? 'Switch to Indonesian' : 'Switch to English'}>
-            <Languages className="w-3.5 h-3.5" />
+          <button onClick={toggleLanguage} className="h-9 px-3 rounded-full border border-white/10 bg-white/[0.03] text-xs font-semibold text-zinc-300 hover:text-white hover:border-white/20 transition flex items-center gap-1.5" title={i18n.language === 'en' ? 'Switch to Indonesian' : 'Switch to English'} aria-label={i18n.language === 'en' ? 'Switch to Indonesian' : 'Switch to English'}>
+            <Languages className="w-3.5 h-3.5" aria-hidden="true" />
             {i18n.language === 'en' ? 'EN' : 'ID'}
           </button>
           <a href="mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda" className="hidden sm:inline-flex h-9 px-4 rounded-full bg-white text-black text-xs font-semibold hover:bg-primary transition-colors items-center gap-1.5">
@@ -189,12 +192,15 @@ const Hero = () => {
               alt="Foto profil Muhammad Fandi Nurcahya"
               className="absolute inset-0 w-full h-full object-contain object-center"
               draggable={false}
+              fetchPriority="high"
+              decoding="async"
             />
             <img
               src={profilePhoto}
               alt=""
               aria-hidden="true"
               draggable={false}
+              decoding="async"
               className="absolute inset-0 w-full h-full object-contain object-center pointer-events-none transition-opacity duration-150"
               style={{
                 filter: 'brightness(0) invert(1)',
@@ -252,7 +258,7 @@ const ProjectCard = ({ project, onView }: { project: any; onView: () => void }) 
     <div className="panel panel-hover rounded-3xl overflow-hidden h-full flex flex-col">
       <div className="relative aspect-[16/10] bg-zinc-900 overflow-hidden">
         {image ? (
-          <img src={image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.03]" />
+          <img src={image} alt={project.title} loading="lazy" decoding="async" className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.03]" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-zinc-600"><Layers className="w-10 h-10" /></div>
         )}
@@ -300,9 +306,9 @@ const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void 
         <div className="p-5 md:p-8">
           <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-4 bg-zinc-900 flex items-center justify-center group">
             {images[activeImageIndex] && isVideoUrl(images[activeImageIndex]) ? (
-              <video src={images[activeImageIndex]} controls muted className="max-w-full max-h-full object-contain" />
+              <video src={images[activeImageIndex]} controls muted preload="metadata" className="max-w-full max-h-full object-contain" />
             ) : (
-              <img src={images[activeImageIndex] ?? `https://picsum.photos/seed/${encodeURIComponent(project.title)}/1200/675`} alt={project.title} className="max-w-full max-h-full object-contain" />
+              <img src={images[activeImageIndex] ?? `https://picsum.photos/seed/${encodeURIComponent(project.title)}/1200/675`} alt={project.title} loading="lazy" decoding="async" className="max-w-full max-h-full object-contain" />
             )}
             {images.length > 1 && (
               <>
@@ -317,7 +323,7 @@ const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void 
             <div className="flex gap-2 overflow-x-auto mb-6 pb-1 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
               {images.map((img: string, idx: number) => (
                 <button key={idx} onClick={() => setActiveImageIndex(idx)} className={`shrink-0 rounded-xl overflow-hidden border-2 transition ${idx === activeImageIndex ? 'border-primary' : 'border-white/10 hover:border-white/25'}`}>
-                  {isVideoUrl(img) ? <div className="w-20 h-14 bg-zinc-800 flex items-center justify-center text-[10px] font-semibold text-zinc-300">VIDEO</div> : <img src={img} alt="" className="w-20 h-14 object-cover bg-zinc-800" />}
+                  {isVideoUrl(img) ? <div className="w-20 h-14 bg-zinc-800 flex items-center justify-center text-[10px] font-semibold text-zinc-300">VIDEO</div> : <img src={img} alt="" loading="lazy" decoding="async" className="w-20 h-14 object-cover bg-zinc-800" />}
                 </button>
               ))}
             </div>
@@ -513,15 +519,87 @@ const Footer = () => {
   );
 };
 
+function TerminalLoader() {
+  const [progress, setProgress] = useState(0);
+  const [dots, setDots] = useState('');
+
+  useEffect(() => {
+    applySeo(null);
+  }, []);
+
+  useEffect(() => {
+    const dotTimer = setInterval(() => {
+      setDots((d) => (d.length >= 3 ? '' : d + '.'));
+    }, 250);
+    const progressTimer = setInterval(() => {
+      setProgress((p) => Math.min(100, p + 7));
+    }, 90);
+
+    const redirectTimer = setTimeout(() => {
+      const lang = typeof navigator !== 'undefined' && (navigator.language || (navigator.languages && navigator.languages[0]) || '').toLowerCase().startsWith('id') ? 'id' : 'en';
+      window.location.replace(`/${lang}/`);
+    }, 1400);
+
+    return () => {
+      clearInterval(dotTimer);
+      clearInterval(progressTimer);
+      clearTimeout(redirectTimer);
+    };
+  }, []);
+
+  const lines = [
+    '> initializing portfolio',
+    '> loading modules',
+    '> detecting language',
+    '> launching interface',
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#050505] text-emerald-400 font-mono flex items-center justify-center p-6">
+      <div className="w-full max-w-2xl border border-emerald-500/20 bg-black/60 rounded-xl p-5 md:p-7 shadow-2xl shadow-emerald-900/10">
+        <div className="flex items-center gap-2 mb-5 text-xs text-emerald-300/70">
+          <span className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
+          <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+          <span className="w-2.5 h-2.5 rounded-full bg-green-400/70" />
+          <span className="ml-2">boot@cahyame:~</span>
+        </div>
+        <div className="space-y-2 text-sm md:text-base">
+          {lines.map((line, i) => (
+            <p key={i} className={progress >= (i + 1) * 22 ? 'opacity-100' : 'opacity-30'}>{line} <span className="text-emerald-300">{progress >= (i + 1) * 22 ? 'ok' : '...'}</span></p>
+          ))}
+          <p className="text-emerald-300 mt-4">redirecting{dots}</p>
+        </div>
+        <div className="mt-6 h-2 w-full bg-emerald-950/60 rounded overflow-hidden border border-emerald-500/20">
+          <div className="h-full bg-emerald-400 transition-all duration-100" style={{ width: `${progress}%` }} />
+        </div>
+        <p className="mt-3 text-xs text-emerald-300/70">{progress}%</p>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
-  const { t } = useTranslation();
-  const [route, setRoute] = useState(window.location.hash);
+  const { t, i18n } = useTranslation();
+  const [route, setRoute] = useState(
+    typeof window !== 'undefined' ? window.location.hash : ''
+  );
+  const pathLang = typeof window !== 'undefined' ? getLangFromPath(window.location.pathname) : null;
 
   useEffect(() => {
     const onHashChange = () => setRoute(window.location.hash);
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (pathLang) {
+      if (i18n.language !== pathLang) i18n.changeLanguage(pathLang);
+      applySeo(pathLang);
+    } else if (window.location.pathname === '/' || window.location.pathname === '') {
+      applySeo(null);
+    }
+  }, [pathLang, i18n]);
 
   const rawProjects = t('projects.projects', { returnObjects: true }) as any[];
   const projects = (Array.isArray(rawProjects) ? rawProjects : []).map((project) => {
@@ -550,12 +628,16 @@ export default function App() {
           <div className="panel rounded-2xl p-8 max-w-md text-center">
             <h1 className="text-xl font-bold mb-2">Admin tidak tersedia</h1>
             <p className="text-zinc-400 text-sm mb-4">Dashboard admin dinonaktifkan pada situs produksi.</p>
-            <a href="#" className="inline-flex px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold">Kembali ke Beranda</a>
+            <a href={pathLang ? `/${pathLang}/` : '/'} className="inline-flex px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold">Kembali ke Beranda</a>
           </div>
         </div>
       );
     }
     return <AdminDashboard />;
+  }
+
+  if (!pathLang) {
+    return <TerminalLoader />;
   }
 
   const nextProject = () => setCurrentProjectIndex((prev) => (projects.length ? (prev + 1) % projects.length : 0));
@@ -581,7 +663,7 @@ export default function App() {
                 <div className="relative">
                   <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-4 md:gap-5 items-stretch">
                     <motion.div key={currentProjectIndex} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="panel rounded-3xl overflow-hidden min-h-[360px] md:min-h-[440px] relative">
-                      <img src={featured.images?.[0] || `https://picsum.photos/seed/${currentProjectIndex}/1200/800`} alt={featured.title} className="absolute inset-0 w-full h-full object-cover" />
+                      <img src={featured.images?.[0] || `https://picsum.photos/seed/${currentProjectIndex}/1200/800`} alt={featured.title} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-[#0a0a0b]/20 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                         <span className="inline-block px-3 py-1 rounded-full bg-black/40 backdrop-blur border border-white/10 text-[11px] font-medium text-zinc-200 mb-3">{featured.category}</span>
@@ -598,7 +680,7 @@ export default function App() {
                       {projects.filter((_, i) => i !== currentProjectIndex).slice(0, 3).map((p) => (
                         <button key={p.title + p.url} onClick={() => goToProject(projects.indexOf(p))} className="panel panel-hover rounded-2xl p-4 text-left flex gap-4 items-center">
                           <div className="w-20 h-20 rounded-xl overflow-hidden bg-zinc-900 shrink-0 border border-white/8">
-                            {p.images?.[0] ? <img src={p.images[0]} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-zinc-600"><Layers className="w-5 h-5"/></div>}
+                            {p.images?.[0] ? <img src={p.images[0]} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-zinc-600"><Layers className="w-5 h-5"/></div>}
                           </div>
                           <div className="min-w-0">
                             <p className="text-[11px] uppercase tracking-wider text-primary mb-1">{p.category}</p>

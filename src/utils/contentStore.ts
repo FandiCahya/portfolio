@@ -35,7 +35,11 @@ export function getDefaults() {
 }
 
 export function loadOverrides(): Partial<Record<Lang, any>> {
+  // Production content must match the prerendered JSON files.
+  if (import.meta.env.PROD) return {};
+
   if (typeof window === 'undefined') return {};
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : {};
@@ -45,10 +49,12 @@ export function loadOverrides(): Partial<Record<Lang, any>> {
 }
 
 export function saveOverrides(overrides: Partial<Record<Lang, any>>) {
+  if (typeof window === 'undefined') return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
 }
 
 export function clearOverrides() {
+  if (typeof window === 'undefined') return;
   localStorage.removeItem(STORAGE_KEY);
 }
 

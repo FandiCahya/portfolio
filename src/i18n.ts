@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 import enTranslations from './locales/en.json';
 import idTranslations from './locales/id.json';
 import { getContent } from './utils/contentStore';
+import { getLangFromPath } from './utils/seo';
 
 const resources = {
   en: {
@@ -14,11 +15,13 @@ const resources = {
   },
 };
 
+const pathLang = typeof window !== 'undefined' ? getLangFromPath(window.location.pathname) : null;
+
 i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en', // default language
+    lng: pathLang || 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
