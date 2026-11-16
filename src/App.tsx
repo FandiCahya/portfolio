@@ -3,22 +3,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type MouseEvent } from 'react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
-import { 
+import {
   Instagram,
   Linkedin,
   Github,
   Briefcase,
-  Cpu, 
-  Terminal, 
-  ArrowUpRight, 
-  MessageSquare, 
-  Share2, 
-  Code, 
-  Mail, 
-  Wallet,
+  Terminal,
+  ArrowUpRight,
+  Mail,
   ExternalLink,
   ChevronRight,
   GraduationCap,
@@ -26,96 +21,93 @@ import {
   Database,
   Globe,
   Languages,
-  ChevronLeft
+  ChevronLeft,
+  Sparkles,
+  Menu,
+  X,
+  Cpu,
+  Layers,
+  Award,
 } from 'lucide-react';
 
 import { getProjectImages } from './data/projectImages';
+import AdminDashboard from './components/AdminDashboard';
+import profilePhoto from './assets/images/profile/foto1.png';
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as any },
+};
+
+const SectionHeading = ({ eyebrow, title, subtitle }: { eyebrow?: string; title: string; subtitle?: string }) => (
+  <div className="mb-10 md:mb-14">
+    {eyebrow && <p className="text-primary text-xs font-semibold tracking-[0.2em] uppercase mb-3">{eyebrow}</p>}
+    <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-white text-balance">{title}</h2>
+    {subtitle && <p className="mt-3 text-zinc-400 max-w-2xl leading-relaxed">{subtitle}</p>}
+  </div>
+);
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'id' : 'en';
-    i18n.changeLanguage(newLang);
+    i18n.changeLanguage(i18n.language === 'en' ? 'id' : 'en');
   };
 
-  const navItems = ['HOME', 'EXPERIENCE', 'PROJECTS', 'SKILLS'];
+  const navItems = ['home', 'experience', 'projects', 'skills'];
 
   return (
-    <header className="flex items-center justify-between whitespace-nowrap border-b border-white/10 px-6 md:px-20 py-4 glass sticky top-0 z-50">
-      <div className="flex items-center gap-3">
-        <div className="text-primary flex items-center justify-center">
-          <Code2 className="w-8 h-8 text-glow-primary" />
-        </div>
-        <h2 className="text-white text-xl font-bold leading-tight tracking-tight uppercase">{t('navbar.brand')}</h2>
-      </div>
+    <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#0a0a0b]/70 backdrop-blur-xl border-b border-white/8' : 'bg-transparent'}`}>
+      <div className="max-w-6xl mx-auto px-5 md:px-8 h-16 md:h-18 flex items-center justify-between">
+        <a href="#home" className="flex items-center gap-2.5 group">
+          <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-primary/40 transition-colors">
+            <Code2 className="w-4 h-4 text-primary" />
+          </div>
+          <span className="font-display font-semibold text-sm md:text-base tracking-tight text-white">{t('navbar.brand')}</span>
+        </a>
 
-      <div className="flex flex-1 justify-end items-center gap-4 md:gap-10">
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-white/[0.03] border border-white/8">
           {navItems.map((item) => (
-            <a
-              key={item}
-              className="text-slate-300 hover:text-primary transition-colors text-sm font-medium tracking-wider"
-              href={`#${item.toLowerCase()}`}
-            >
-              {t(`navbar.${item.toLowerCase()}`)}
+            <a key={item} href={`#${item}`} className="px-4 py-2 rounded-full text-sm text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">
+              {t(`navbar.${item}`)}
             </a>
           ))}
         </nav>
 
-        <button
-          onClick={toggleLanguage}
-          className="flex min-w-10.5 sm:min-w-13 cursor-pointer items-center justify-center rounded-full h-11 px-3 bg-white/10 text-white text-xs font-black tracking-widest border border-white/30 hover:brightness-125 transition-all"
-          title={i18n.language === 'en' ? 'Switch to Indonesian' : 'Switch to English'}
-        >
-          <Languages className="w-4 h-4" />
-        </button>
-
-        <button
-          onClick={() => window.location.href = 'mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda'}
-          className="hidden sm:flex items-center justify-center rounded-full h-11 px-6 bg-primary text-white text-xs font-black tracking-widest glow-primary border border-white/30 hover:brightness-125 transition-all whitespace-nowrap"
-        >
-          <Mail className="w-4 h-4 mr-2" />
-          <span className="truncate">{t('navbar.hireMe')}</span>
-        </button>
-
-        <button
-          onClick={() => setMenuOpen((prev) => !prev)}
-          className="flex md:hidden items-center justify-center rounded-full h-11 w-11 bg-white/10 text-white border border-white/30 hover:bg-white/20 transition-all"
-          aria-label="Open navigation menu"
-        >
-          <Share2 className="w-5 h-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button onClick={toggleLanguage} className="h-9 px-3 rounded-full border border-white/10 bg-white/[0.03] text-xs font-semibold text-zinc-300 hover:text-white hover:border-white/20 transition flex items-center gap-1.5" title={i18n.language === 'en' ? 'Switch to Indonesian' : 'Switch to English'}>
+            <Languages className="w-3.5 h-3.5" />
+            {i18n.language === 'en' ? 'EN' : 'ID'}
+          </button>
+          <a href="mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda" className="hidden sm:inline-flex h-9 px-4 rounded-full bg-white text-black text-xs font-semibold hover:bg-primary transition-colors items-center gap-1.5">
+            <Mail className="w-3.5 h-3.5" /> {t('navbar.hireMe')}
+          </a>
+          <button onClick={() => setMenuOpen((p) => !p)} className="md:hidden h-9 w-9 rounded-full border border-white/10 bg-white/[0.03] flex items-center justify-center text-zinc-300" aria-label="Menu">
+            {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
-        <div className="absolute right-6 top-full mt-3 w-[calc(100vw-3rem)] max-w-sm rounded-3xl border border-white/10 bg-slate-950/95 backdrop-blur-xl p-4 shadow-2xl md:hidden">
-          <div className="flex flex-col gap-3">
+        <div className="md:hidden px-5 pb-4">
+          <div className="panel rounded-2xl p-3 flex flex-col gap-1">
             {navItems.map((item) => (
-              <a
-                key={item}
-                onClick={() => setMenuOpen(false)}
-                href={`#${item.toLowerCase()}`}
-                className="block rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 hover:bg-white/5 transition-colors"
-              >
-                {t(`navbar.${item.toLowerCase()}`)}
+              <a key={item} href={`#${item}`} onClick={() => setMenuOpen(false)} className="px-4 py-3 rounded-xl text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition">
+                {t(`navbar.${item}`)}
               </a>
             ))}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-100 bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
-            >
-              <Languages className="w-4 h-4" />
-              {i18n.language === 'en' ? 'ID' : 'EN'}
-            </button>
-            <button
-              onClick={() => window.location.href = 'mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda'}
-              className="flex items-center justify-center rounded-2xl px-4 py-3 bg-primary text-white text-sm font-semibold tracking-widest hover:brightness-110 transition-all"
-            >
-              <Mail className="w-4 h-4 mr-2" />
-              {t('navbar.hireMe')}
-            </button>
+            <a href="mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda" className="mt-1 px-4 py-3 rounded-xl bg-white text-black text-sm font-semibold text-center">{t('navbar.hireMe')}</a>
           </div>
         </div>
       )}
@@ -125,92 +117,305 @@ const Navbar = () => {
 
 const Hero = () => {
   const { t } = useTranslation();
+  const [cursor, setCursor] = useState({ x: 50, y: 50, active: false });
+
+  const handleMove = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setCursor({ x, y, active: true });
+  };
+
+  const handleLeave = () => setCursor((c) => ({ ...c, active: false }));
 
   return (
-    <section id="home" className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24 pt-12">
-      <motion.div 
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8 }}
-        className="flex flex-col gap-8"
-      >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/40 w-fit glow-primary">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-          </span>
-          <span className="text-primary text-[10px] font-bold tracking-widest uppercase">{t('hero.status')}</span>
-        </div>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-white text-5xl md:text-7xl font-black leading-[1.1] tracking-tight">
-            {t('hero.title')} <span className="text-transparent bg-clip-text bg-linear-to-r from-primary via-accent-violet to-accent-cyan animate-pulse">{t('hero.titleHighlight')}</span> {t('hero.titleEnd')}
+    <section id="home" className="relative pt-28 md:pt-36 pb-20 md:pb-28">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-primary/10 blur-[120px] rounded-full opacity-60" />
+        <div className="absolute top-40 right-0 w-[400px] h-[300px] bg-accent/10 blur-[120px] rounded-full opacity-50" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_60%,transparent_100%)]" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-5 md:px-8 grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-16 items-center">
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03] text-xs text-zinc-300 mb-7">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            {t('hero.status')}
+          </div>
+
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.05] tracking-tight text-white text-balance">
+            {t('hero.title')}{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-emerald-300 to-accent">{t('hero.titleHighlight')}</span>{' '}
+            {t('hero.titleEnd')}
           </h1>
-          <p className="text-slate-400 text-lg max-w-lg leading-relaxed">
+
+          <p className="mt-6 text-base md:text-lg text-zinc-400 leading-relaxed max-w-2xl">
             {t('hero.description')}
           </p>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <a href="#projects" className="flex w-full sm:w-auto cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-white text-black text-sm font-bold tracking-wider hover:bg-accent-cyan hover:glow-cyan transition-all no-underline">
-            {t('hero.viewProjects')}
-          </a>
-          <button className="flex w-full sm:w-14 h-14 items-center justify-center rounded-xl glass text-white hover:text-primary hover:border-primary/50 transition-all border border-white/10">
-            <Terminal className="w-6 h-6" />
-          </button>
-        </div>
-      </motion.div>
-      
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
-        className="relative flex justify-center items-center"
-      >
-        <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full"></div>
-        <div className="absolute inset-0 bg-accent-violet/15 blur-[150px] rounded-full animate-pulse"></div>
-        <div className="relative w-full aspect-square max-w-md rounded-full border border-white/20 shadow-[0_0_80px_rgba(112,0,255,0.3)] overflow-hidden">
-          <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvHQ3rtlUxwSoNuA3yFi8oooDe7ECNhGR9zf_sDqtzkjqTSwwhajFMpB51s7KXmX9m9abOmNe53qLC7G4oRnqqrhvdeChdoMHwhoJBGCLVvNjy6WKscq0W0IR6TUVR-vFd4DAl40Ny_IwEvf-VjERBqMWF6OYJT0XSFDOFRF7UQEDzVnbm2Uo_744VszHaacHWpVD19B_GqTHoIrwwpdJhjF1BpdCmX_joF-HzZyE3-wChEXNF2S3hA-wXYtZd4Bhr9ecwOCWQVrw" 
-            alt="Abstract 3D particle sphere"
-            className="w-full h-full object-cover animate-float"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-linear-to-tr from-accent-violet/40 via-transparent to-accent-cyan/20 rounded-full"></div>
-        </div>
-      </motion.div>
+
+          <div className="mt-9 flex flex-col sm:flex-row gap-3">
+            <a href="#projects" className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-white text-black font-semibold text-sm hover:bg-primary transition-colors">
+              {t('hero.viewProjects')} <ArrowUpRight className="w-4 h-4" />
+            </a>
+            <a href="mailto:fandicahya56@gmail.com?subject=Halo&body=Saya tertarik dengan layanan Anda" className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-white/12 bg-white/[0.02] text-white font-medium text-sm hover:bg-white/[0.06] transition-colors">
+              <Mail className="w-4 h-4" /> {t('navbar.hireMe')}
+            </a>
+          </div>
+
+          <div className="mt-10 flex items-center gap-4 text-zinc-400">
+            <a href="https://github.com/FandiCahya" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="GitHub"><Github className="w-5 h-5" /></a>
+            <a href="https://www.linkedin.com/in/muhammad-fandi-nurcahya-1061041b7/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="LinkedIn"><Linkedin className="w-5 h-5" /></a>
+            <a href="https://www.instagram.com/cay56f/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors" title="Instagram"><Instagram className="w-5 h-5" /></a>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }} className="relative lg:justify-self-end w-full max-w-md mx-auto flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-72 h-72 md:w-96 md:h-96 bg-gradient-to-tr from-primary/20 via-transparent to-accent/20 blur-3xl rounded-full" />
+          </div>
+          <div
+            className="relative w-72 md:w-[30rem] lg:w-[34rem] aspect-square cursor-none select-none"
+            onMouseMove={handleMove}
+            onMouseLeave={handleLeave}
+            aria-label="Foto profil"
+          >
+            <img
+              src={profilePhoto}
+              alt="Foto profil Muhammad Fandi Nurcahya"
+              className="absolute inset-0 w-full h-full object-contain object-center"
+              draggable={false}
+            />
+            <img
+              src={profilePhoto}
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              className="absolute inset-0 w-full h-full object-contain object-center pointer-events-none transition-opacity duration-150"
+              style={{
+                filter: 'brightness(0) invert(1)',
+                opacity: cursor.active ? 1 : 0,
+                WebkitMaskImage: `radial-gradient(circle 80px at ${cursor.x}% ${cursor.y}%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 70%)`,
+                maskImage: `radial-gradient(circle 80px at ${cursor.x}% ${cursor.y}%, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 70%)`,
+              }}
+            />
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 };
 
 const WorkExperience = () => {
   const { t } = useTranslation();
-  const experiences = t('experience.experiences', { returnObjects: true }) as any[];
+  const experiences = (t('experience.experiences', { returnObjects: true }) as any[]) || [];
 
   return (
-    <section id="experience" className="max-w-4xl mx-auto mb-24">
-      <div className="glass rounded-3xl p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4">
-          <Briefcase className="w-16 h-16 text-accent-cyan/10 animate-pulse" />
-        </div>
-        <div className="relative z-10">
-          <h2 className="text-white text-2xl font-bold mb-2">{t('experience.title')}</h2>
-          <p className="text-slate-400 text-sm mb-8">{t('experience.subtitle')}</p>
+    <section id="experience" className="py-16 md:py-24">
+      <div className="max-w-6xl mx-auto px-5 md:px-8">
+        <SectionHeading eyebrow="Career" title={t('experience.title')} subtitle={t('experience.subtitle')} />
+        <div className="relative">
+          <div className="absolute left-[19px] md:left-[23px] top-2 bottom-2 w-px bg-gradient-to-b from-primary/50 via-white/10 to-transparent" />
           <div className="space-y-6">
             {experiences.map((exp, index) => (
-              <div key={index} className="p-6 rounded-2xl bg-white/5 border border-white/5 flex gap-6 items-start hover:bg-white/10 transition-all hover:border-white/20">
-                <div className={`w-12 h-12 rounded-full bg-linear-to-br ${index === 0 ? 'from-primary to-accent-violet' : 'from-cyan-400 to-blue-600'} shrink-0 flex items-center justify-center shadow-lg`}>
-                  <Briefcase className="w-6 h-6 text-white" />
+              <motion.div key={index} {...fadeUp} transition={{ ...fadeUp.transition, delay: index * 0.06 }} className="relative pl-12 md:pl-16">
+                <div className="absolute left-0 top-1.5 w-10 h-10 md:w-12 md:h-12 rounded-2xl panel flex items-center justify-center">
+                  <Briefcase className="w-4 h-4 md:w-5 md:h-5 text-primary" />
                 </div>
-                <div className="flex flex-col gap-2 flex-1">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-1">
-                    <h3 className="text-white font-bold text-lg">{exp.role}</h3>
-                    <span className="text-accent-cyan font-mono text-xs text-glow-cyan">{exp.period}</span>
+                <div className="panel panel-hover rounded-2xl p-5 md:p-6">
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-2">
+                    <div>
+                      <h3 className="font-display text-lg md:text-xl font-semibold text-white">{exp.role}</h3>
+                      <p className="text-zinc-300 font-medium">{exp.company}</p>
+                    </div>
+                    <span className="inline-flex self-start px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-zinc-300 whitespace-nowrap">{exp.period}</span>
                   </div>
-                  <div className="text-slate-300 font-medium text-sm">{exp.company}</div>
-                  <p className="text-slate-400 text-sm leading-relaxed">{exp.description}</p>
+                  <p className="text-zinc-400 leading-relaxed">{exp.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProjectCard = ({ project, onView }: { project: any; onView: () => void }) => {
+  const { t } = useTranslation();
+  const image = project.images?.[0];
+  return (
+    <div className="panel panel-hover rounded-3xl overflow-hidden h-full flex flex-col">
+      <div className="relative aspect-[16/10] bg-zinc-900 overflow-hidden">
+        {image ? (
+          <img src={image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-[1.03]" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-zinc-600"><Layers className="w-10 h-10" /></div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-transparent to-transparent opacity-70" />
+        <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/40 backdrop-blur border border-white/10 text-[11px] font-medium text-zinc-200">{project.category}</span>
+      </div>
+      <div className="p-5 md:p-6 flex flex-col flex-1">
+        <h3 className="font-display text-xl font-semibold text-white mb-2">{project.title}</h3>
+        <p className="text-zinc-400 text-sm leading-relaxed line-clamp-3 mb-5">{project.description}</p>
+        <div className="mt-auto flex flex-wrap gap-2">
+          <button onClick={onView} className="inline-flex items-center gap-1.5 h-10 px-4 rounded-full bg-white text-black text-sm font-semibold hover:bg-primary transition-colors">
+            {t('projects.viewProject')} <ArrowUpRight className="w-4 h-4" />
+          </button>
+          {project.url && (
+            <a href={project.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 h-10 px-4 rounded-full border border-white/12 text-zinc-200 text-sm font-medium hover:bg-white/5 transition-colors">
+              {t('projects.openUrl')} <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void }) => {
+  const { t } = useTranslation();
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'unset'; };
+  }, []);
+
+  useEffect(() => { setActiveImageIndex(0); }, [project]);
+
+  const isVideoUrl = (url: string) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
+  const images = project.images || [];
+  const nextImage = () => { if (images.length > 1) setActiveImageIndex((p) => (p + 1) % images.length); };
+  const prevImage = () => { if (images.length > 1) setActiveImageIndex((p) => (p - 1 + images.length) % images.length); };
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={onClose}>
+      <motion.div initial={{ scale: 0.97, opacity: 0, y: 8 }} animate={{ scale: 1, opacity: 1, y: 0 }} transition={{ type: 'spring', damping: 28, stiffness: 260 }} className="relative max-w-5xl w-full max-h-[90vh] overflow-y-auto bg-[#111113] rounded-3xl border border-white/10 shadow-2xl modal-scroll" onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/10 transition" aria-label="Close"><X className="w-5 h-5" /></button>
+        <div className="p-5 md:p-8">
+          <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden mb-4 bg-zinc-900 flex items-center justify-center group">
+            {images[activeImageIndex] && isVideoUrl(images[activeImageIndex]) ? (
+              <video src={images[activeImageIndex]} controls muted className="max-w-full max-h-full object-contain" />
+            ) : (
+              <img src={images[activeImageIndex] ?? `https://picsum.photos/seed/${encodeURIComponent(project.title)}/1200/675`} alt={project.title} className="max-w-full max-h-full object-contain" />
+            )}
+            {images.length > 1 && (
+              <>
+                <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition"><ChevronLeft className="w-5 h-5" /></button>
+                <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition"><ChevronRight className="w-5 h-5" /></button>
+                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-full bg-black/50 text-xs text-white">{activeImageIndex + 1} / {images.length}</div>
+              </>
+            )}
+          </div>
+
+          {images.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto mb-6 pb-1 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
+              {images.map((img: string, idx: number) => (
+                <button key={idx} onClick={() => setActiveImageIndex(idx)} className={`shrink-0 rounded-xl overflow-hidden border-2 transition ${idx === activeImageIndex ? 'border-primary' : 'border-white/10 hover:border-white/25'}`}>
+                  {isVideoUrl(img) ? <div className="w-20 h-14 bg-zinc-800 flex items-center justify-center text-[10px] font-semibold text-zinc-300">VIDEO</div> : <img src={img} alt="" className="w-20 h-14 object-cover bg-zinc-800" />}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-8">
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-semibold tracking-wide mb-3">{project.category}</span>
+              <h2 className="font-display text-3xl md:text-4xl font-semibold text-white mb-4">{project.title}</h2>
+              {project.url && (
+                <a href={project.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-white/12 text-sm font-medium text-zinc-200 hover:bg-white/5 transition mb-5">
+                  <ExternalLink className="w-4 h-4" /> {t('projects.openUrl')}
+                </a>
+              )}
+              <p className="text-zinc-300 leading-relaxed text-[15px] md:text-base">{project.description}</p>
+            </div>
+            <div className="space-y-5">
+              <div className="panel rounded-2xl p-5">
+                <h3 className="text-white font-semibold mb-3">Details</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between gap-4"><span className="text-zinc-400">Status</span><span className="text-zinc-200 font-medium">{project.details?.status || '-'}</span></div>
+                  <div className="flex justify-between gap-4"><span className="text-zinc-400">Type</span><span className="text-zinc-200 font-medium text-right">{project.details?.type || project.category}</span></div>
+                </div>
+              </div>
+              <div className="panel rounded-2xl p-5">
+                <h3 className="text-white font-semibold mb-3">Technologies</h3>
+                <div className="flex flex-wrap gap-2">
+                  {(project.details?.technologies || []).length > 0 ? (
+                    project.details.technologies.map((tech: string, i: number) => (
+                      <span key={i} className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-zinc-300">{tech}</span>
+                    ))
+                  ) : <span className="text-sm text-zinc-500">-</span>}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const Skills = () => {
+  const { t } = useTranslation();
+  const rawProjects = (t('projects.projects', { returnObjects: true }) as any[]) || [];
+  const projectTechs = Array.from(
+    new Map(
+      rawProjects
+        .flatMap((p) => (Array.isArray(p?.details?.technologies) ? p.details.technologies : []))
+        .filter((tech) => typeof tech === 'string' && tech.trim())
+        .map((tech) => [tech.trim().toLowerCase(), tech.trim()])
+    ).values()
+  );
+
+  const baseGroups: { key: string; title: string; skills: string[]; icon: any }[] = [
+    { key: 'languages', title: t('skills.groups.languages'), skills: ['Python', 'JavaScript', 'PHP', 'Kotlin', 'Dart'], icon: <Globe className="w-5 h-5" /> },
+    { key: 'frameworks', title: t('skills.groups.frameworks'), skills: ['Laravel', 'Django', 'Flutter', 'React.js', 'Bootstrap'], icon: <Layers className="w-5 h-5" /> },
+    { key: 'databaseApi', title: t('skills.groups.databaseApi'), skills: ['MySQL', 'PostgreSQL', 'REST API', 'Supabase', 'Firebase'], icon: <Database className="w-5 h-5" /> },
+    { key: 'tools', title: t('skills.groups.tools'), skills: ['Git', 'GitHub', 'GitLab', 'Docker', 'Postman'], icon: <Terminal className="w-5 h-5" /> },
+    { key: 'others', title: t('others', { defaultValue: 'Others' }), skills: ['Roblox Studio'], icon: <Cpu className="w-5 h-5" /> },
+  ];
+
+  const categoryMap: Record<string, string> = {
+    python: 'languages', javascript: 'languages', php: 'languages', kotlin: 'languages', dart: 'languages', typescript: 'languages', java: 'languages', 'c#': 'languages', 'c++': 'languages', go: 'languages', ruby: 'languages',
+    laravel: 'frameworks', django: 'frameworks', flutter: 'frameworks', 'react.js': 'frameworks', react: 'frameworks', bootstrap: 'frameworks', 'chart.js': 'frameworks', chartjs: 'frameworks', tailwind: 'frameworks', 'tailwind css': 'frameworks', vue: 'frameworks', 'vue.js': 'frameworks', next: 'frameworks', 'next.js': 'frameworks', express: 'frameworks', 'node.js': 'frameworks', nodejs: 'frameworks',
+    mysql: 'databaseApi', postgresql: 'databaseApi', 'rest api': 'databaseApi', supabase: 'databaseApi', firebase: 'databaseApi', mongodb: 'databaseApi', sqlite: 'databaseApi', api: 'databaseApi',
+    git: 'tools', github: 'tools', gitlab: 'tools', docker: 'tools', postman: 'tools', vercel: 'tools', figma: 'tools', vscode: 'tools',
+  };
+
+  const addUnique = (arr: string[], value: string) => {
+    if (!arr.some((s) => s.toLowerCase() === value.toLowerCase())) arr.push(value);
+  };
+
+  projectTechs.forEach((tech) => {
+    const key = tech.toLowerCase().replace(/\s+/g, ' ').trim();
+    const cat = categoryMap[key] || categoryMap[key.replace(/\./g, '')] || 'tools';
+    const group = baseGroups.find((g) => g.key === cat) || baseGroups.find((g) => g.key === 'tools')!;
+    addUnique(group.skills, tech);
+  });
+
+  const skillGroups = baseGroups;
+
+  return (
+    <section id="skills" className="py-16 md:py-24">
+      <div className="max-w-6xl mx-auto px-5 md:px-8">
+        <SectionHeading eyebrow="Expertise" title={t('skills.title')} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          {skillGroups.map((group, idx) => (
+            <motion.div key={idx} {...fadeUp} transition={{ ...fadeUp.transition, delay: idx * 0.05 }} className="panel panel-hover rounded-2xl p-5 md:p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">{group.icon}</div>
+                <h3 className="font-display font-semibold text-white">{group.title}</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {group.skills.map((skill, sIdx) => (
+                  <span key={sIdx} className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/8 text-sm text-zinc-300">{skill}</span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -219,580 +424,215 @@ const WorkExperience = () => {
 
 const Education = () => {
   const { t } = useTranslation();
-
   return (
-    <section className="max-w-4xl mx-auto mb-24">
-      <div className="glass rounded-3xl p-8 border border-white/10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-4">
-          <GraduationCap className="w-16 h-16 text-primary/10 animate-pulse" />
-        </div>
-        <div className="relative z-10">
-          <h2 className="text-white text-2xl font-bold mb-2">{t('education.title')}</h2>
-          <div className="mt-6 p-6 rounded-2xl bg-white/5 border border-white/5 flex gap-6 items-start">
-            <div className="w-12 h-12 rounded-full bg-linear-to-br from-primary to-orange-600 shrink-0 flex items-center justify-center shadow-lg">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex flex-col gap-2 flex-1">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-1">
-                <h3 className="text-white font-bold text-lg">{t('education.school')}</h3>
-                <span className="text-accent-cyan font-mono text-xs text-glow-cyan">{t('education.period')}</span>
-              </div>
-              <div className="text-slate-300 font-medium text-sm">{t('education.major')}</div>
-              <p className="text-slate-400 text-sm">{t('education.gpa')}</p>
-            </div>
+    <section className="py-16 md:py-24">
+      <div className="max-w-6xl mx-auto px-5 md:px-8">
+        <SectionHeading eyebrow="Background" title={t('education.title')} />
+        <motion.div {...fadeUp} className="panel rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:items-center">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+            <GraduationCap className="w-7 h-7" />
           </div>
-        </div>
+          <div className="flex-1">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-1">
+              <h3 className="font-display text-xl md:text-2xl font-semibold text-white">{t('education.school')}</h3>
+              <span className="inline-flex self-start px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-zinc-300">{t('education.period')}</span>
+            </div>
+            <p className="text-zinc-300 font-medium">{t('education.major')}</p>
+            <p className="text-zinc-400 mt-1">{t('education.gpa')}</p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-const Skills = () => {
+const AdditionalInfo = () => {
   const { t } = useTranslation();
-  const skillGroups = [
-  { 
-    title: t('skills.groups.languages'), 
-    skills: ['Python', 'JavaScript', 'PHP', 'Kotlin', 'Dart'], 
-    icon: <Globe className="w-5 h-5" /> 
-  },
-  { 
-    title: t('skills.groups.frameworks'), 
-    skills: ['Laravel', 'Django', 'Flutter', 'React.js', 'Bootstrap'], 
-    icon: <Code className="w-5 h-5" /> 
-  },
-  { 
-    title: t('skills.groups.databaseApi'), 
-    skills: ['MySQL', 'PostgreSQL', 'REST API', 'Supabase', 'Firebase'], 
-    icon: <Database className="w-5 h-5" /> 
-  },
-  { 
-    title: t('skills.groups.tools'), 
-    skills: ['Git', 'GitHub', 'GitLab', 'Docker', 'Postman'], 
-    icon: <Terminal className="w-5 h-5" /> 
-  },
-  { 
-    title: t('others'),
-    skills: ['Roblox Studio'], 
-    icon: <Cpu className="w-5 h-5" /> 
-  }
-];
+  const certifications = (t('additional.certifications.list', { returnObjects: true }) as string[]) || [];
 
   return (
-    <section id="skills" className="mb-24">
-      <div className="flex items-center justify-between mb-10">
-        <h2 className="text-white text-3xl font-bold tracking-tight">{t('skills.title')}</h2>
-        <div className="h-px flex-1 mx-8 bg-linear-to-r from-primary/50 via-white/10 to-transparent"></div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {skillGroups.map((group, idx) => (
-          <motion.div 
-            key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-            className="glass p-6 rounded-2xl border border-white/10 hover:border-primary/50 transition-all"
-          >
-            <div className="flex items-center gap-3 mb-4 text-primary">
-              {group.icon}
-              <h3 className="text-white font-bold">{group.title}</h3>
+    <section className="py-16 md:py-24">
+      <div className="max-w-6xl mx-auto px-5 md:px-8">
+        <SectionHeading eyebrow="More" title={t('additional.languages.title') + ' & ' + t('additional.certifications.title')} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+          <motion.div {...fadeUp} className="panel panel-hover rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent"><Globe className="w-5 h-5" /></div>
+              <h3 className="font-display font-semibold text-white">{t('additional.languages.title')}</h3>
             </div>
             <div className="flex flex-wrap gap-2">
-              {group.skills.map((skill, sIdx) => (
-                <span key={sIdx} className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300">
-                  {skill}
-                </span>
-              ))}
+              <span className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/8 text-sm text-zinc-300">{t('additional.languages.indonesian')}</span>
+              <span className="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/8 text-sm text-zinc-300">{t('additional.languages.english')}</span>
             </div>
           </motion.div>
-        ))}
+
+          <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.05 }} className="panel panel-hover rounded-2xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary"><Award className="w-5 h-5" /></div>
+              <h3 className="font-display font-semibold text-white">{t('additional.certifications.title')}</h3>
+            </div>
+            <div className="space-y-2">
+              {certifications.map((cert, idx) => (
+                <div key={idx} className="flex items-start gap-2.5 text-sm text-zinc-300">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  <span>{cert}</span>
+                </div>
+              ))}
+              {certifications.length === 0 && <p className="text-sm text-zinc-500">-</p>}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
-  );
-};
-
-const ProjectCard = ({ title, category, description, image, colorClass, delay, onViewProject, projectUrl }: any) => {
-  const { t } = useTranslation();
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.6 }}
-      className={`group relative overflow-hidden rounded-3xl glass border border-white/10 flex flex-col hover:border-${colorClass}/50 transition-all duration-300 animate-float min-h-104 md:min-h-112`}
-      style={{ animationDelay: `${delay * 2}s` }}
-    >
-      <div className="absolute inset-0 bg-contain bg-center bg-no-repeat transition-transform duration-700 group-hover:scale-105" 
-           style={{ 
-             backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.9) 100%), url("${image}")` 
-           }}>
-      </div>
-      <div className="relative mt-auto p-6 md:p-8 flex flex-col gap-4 justify-end min-h-88">
-        <div className="absolute inset-x-0 bottom-0 top-0 rounded-3xl bg-linear-to-t from-slate-950/95 via-slate-950/40 to-transparent pointer-events-none" />
-        <div className="relative z-10">
-          <span className="text-primary text-xs font-bold tracking-widest uppercase mb-2 block">
-            {category}
-          </span>
-          <h3 className="text-white text-2xl md:text-3xl font-bold mb-3">{title}</h3>
-        </div>
-        <div className="relative z-10 flex flex-col sm:flex-row gap-3">
-          <button 
-            onClick={onViewProject}
-            className="flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3 text-white rounded-xl font-bold text-xs transition-all group-hover:-translate-y-2 border border-white/30 hover:border-white/60 cursor-pointer"
-          >
-            {t('projects.viewProject')} <ArrowUpRight className="w-4 h-4" />
-          </button>
-          {projectUrl && (
-            <a
-              href={projectUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex w-full sm:w-auto items-center justify-center gap-2 px-6 py-3 text-primary rounded-xl font-bold text-xs transition-all group-hover:-translate-y-2 border border-primary/40 bg-primary/10 hover:bg-primary/20"
-            >
-              {t('projects.openUrl')} <ExternalLink className="w-4 h-4" />
-            </a>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-const ProjectModal = ({ project, onClose }: { project: any; onClose: () => void }) => {
-  const { t } = useTranslation();
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
-
-  // Reset image index when switching projects
-  useEffect(() => {
-    setActiveImageIndex(0);
-  }, [project]);
-
-  const isVideoUrl = (url: string) => /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
-
-  const nextImage = () => {
-    if (project.images && project.images.length > 1) {
-      setActiveImageIndex((prev) => (prev + 1) % project.images.length);
-    }
-  };
-
-  const prevImage = () => {
-    if (project.images && project.images.length > 1) {
-      setActiveImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
-    }
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-slate-900/95 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl modal-scroll"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300"
-          aria-label="Close modal"
-        >
-          <span className="text-xl font-bold">×</span>
-        </button>
-
-        {/* Modal Content */}
-        <div className="p-8">
-          {/* Project Media Gallery */}
-          <div className="relative w-full h-80 md:h-96 rounded-2xl overflow-hidden mb-4 group bg-slate-800 flex items-center justify-center">
-            {project.images?.[activeImageIndex] && isVideoUrl(project.images[activeImageIndex]) ? (
-              <video
-                src={project.images[activeImageIndex]}
-                controls
-                muted
-                className="max-w-full max-h-full object-contain transition-all duration-300"
-              />
-            ) : (
-              <img
-                src={project.images?.[activeImageIndex] ?? `https://picsum.photos/seed/project${project.title.replace(/\s+/g, '').toLowerCase()}/1200/600`}
-                alt={project.title}
-                className="max-w-full max-h-full object-contain transition-all duration-300"
-              />
-            )}
-            <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent pointer-events-none" />
-
-            {/* Navigation Arrows */}
-            {project.images && project.images.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-all duration-300 opacity-0 group-hover:opacity-100"
-                  aria-label="Previous image"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-black/50 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-all duration-300 opacity-0 group-hover:opacity-100"
-                  aria-label="Next image"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </>
-            )}
-
-            {/* Image Counter */}
-            {project.images && project.images.length > 1 && (
-              <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-white text-sm font-medium">
-                {activeImageIndex + 1} / {project.images.length}
-              </div>
-            )}
-          </div>
-
-          {/* Thumbnail Gallery */}
-          {project.images && project.images.length > 1 && (
-            <div className="flex gap-3 overflow-x-auto mb-6 pb-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
-              {project.images.map((img: string, idx: number) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveImageIndex(idx)}
-                  className={`relative shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                    idx === activeImageIndex
-                      ? 'border-primary shadow-lg shadow-primary/30 scale-105'
-                      : 'border-white/20 hover:border-white/40'
-                  }`}
-                >
-                  {isVideoUrl(img) ? (
-                    <div className="relative w-24 h-16 bg-slate-700 flex items-center justify-center text-white text-xs font-semibold">
-                      VIDEO
-                    </div>
-                  ) : (
-                    <img
-                      src={img}
-                      alt={`${project.title} screenshot ${idx + 1}`}
-                      className="w-24 h-16 object-contain bg-slate-700"
-                    />
-                  )}
-                  {idx === activeImageIndex && (
-                    <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
-                      <div className="w-3 h-3 bg-primary rounded-full"></div>
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Single Image Indicator */}
-          {project.images && project.images.length === 1 && (
-            <div className="mb-6 text-center">
-              <span className="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-bold tracking-widest uppercase rounded-full">
-                Project Screenshot
-              </span>
-            </div>
-          )}
-
-          {/* Project Info */}
-          <div className="space-y-6">
-            <div>
-              <span className="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-bold tracking-widest uppercase rounded-full mb-3">
-                {project.category}
-              </span>
-              <h2 className="text-white text-3xl md:text-4xl font-bold mb-4">{project.title}</h2>
-              {project.url && (
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 transition-all mb-4"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  {t('projects.openUrl')}
-                </a>
-              )}
-            </div>
-
-            <div className="prose prose-invert max-w-none">
-              <p className="text-slate-300 text-lg leading-relaxed">{project.description}</p>
-            </div>
-
-            {/* Project Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-white/10">
-              <div className="space-y-4">
-                <h3 className="text-white text-xl font-semibold">Project Details</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-slate-300">Category: <span className="text-white font-medium">{project.category}</span></span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-accent-cyan rounded-full"></div>
-                    <span className="text-slate-300">Status: <span className="text-green-400 font-medium">{project.details?.status || 'Completed'}</span></span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-accent-violet rounded-full"></div>
-                    <span className="text-slate-300">Type: <span className="text-white font-medium">{project.details?.type || 'Application'}</span></span>
-                  </div>
-                  
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-white text-xl font-semibold">Technologies Used</h3>
-                <div className="flex flex-wrap gap-2">
-                  {project.details?.technologies ? (
-                    project.details.technologies.map((tech: string, index: number) => {
-                      const colors = [
-                        'bg-blue-500/20 text-blue-300',
-                        'bg-green-500/20 text-green-300',
-                        'bg-orange-500/20 text-orange-300',
-                        'bg-purple-500/20 text-purple-300',
-                        'bg-red-500/20 text-red-300',
-                        'bg-yellow-500/20 text-yellow-300',
-                        'bg-indigo-500/20 text-indigo-300',
-                        'bg-pink-500/20 text-pink-300'
-                      ];
-                      return (
-                        <span key={index} className={`px-3 py-1 ${colors[index % colors.length]} text-xs rounded-full`}>
-                          {tech}
-                        </span>
-                      );
-                    })
-                  ) : (
-                    <>
-                      <span className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full">Technology</span>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
   );
 };
 
 const Footer = () => {
   const { t } = useTranslation();
-
+  const adminEnabled = import.meta.env.DEV || import.meta.env.VITE_ENABLE_ADMIN === 'true';
   return (
-    <footer className="px-6 md:px-20 py-12 border-t border-white/10 glass">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <Code2 className="w-5 h-5 text-primary text-glow-primary" />
-            <span className="text-white font-bold tracking-widest uppercase">{t('footer.name')}</span>
+    <footer className="border-t border-white/8 mt-8">
+      <div className="max-w-6xl mx-auto px-5 md:px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+            <Code2 className="w-4 h-4 text-primary" />
+            <span className="font-display font-semibold text-white">{t('footer.name')}</span>
           </div>
-          <p className="text-slate-500 text-xs">{t('footer.copyright')}</p>
+          <p className="text-xs text-zinc-500">{t('footer.copyright')}</p>
+          {adminEnabled && <a href="#admin" className="inline-block mt-2 text-[10px] uppercase tracking-widest text-zinc-600 hover:text-zinc-400">Admin</a>}
         </div>
-        <div className="flex gap-6">
-          <a 
-            className="text-slate-400 hover:text-accent-cyan transition-all transform hover:scale-110" 
-            href="https://github.com/FandiCahya" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            title="GitHub"
-          >
-            <Github className="w-6 h-6" />
-          </a>
-          <a 
-            className="text-slate-400 hover:text-accent-violet transition-all transform hover:scale-110" 
-            href="https://www.linkedin.com/in/muhammad-fandi-nurcahya-1061041b7/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            title="LinkedIn"
-          >
-            <Linkedin className="w-6 h-6" />
-          </a>
-          <a 
-            className="text-slate-400 hover:text-primary transition-all transform hover:scale-110" 
-            href="https://www.instagram.com/cay56f/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            title="Instagram"
-          >
-            <Instagram className="w-6 h-6" />
-          </a>
+        <div className="flex items-center gap-3">
+          <a className="w-10 h-10 rounded-full border border-white/10 bg-white/[0.02] flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition" href="https://github.com/FandiCahya" target="_blank" rel="noopener noreferrer" title="GitHub"><Github className="w-4 h-4" /></a>
+          <a className="w-10 h-10 rounded-full border border-white/10 bg-white/[0.02] flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition" href="https://www.linkedin.com/in/muhammad-fandi-nurcahya-1061041b7/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><Linkedin className="w-4 h-4" /></a>
+          <a className="w-10 h-10 rounded-full border border-white/10 bg-white/[0.02] flex items-center justify-center text-zinc-400 hover:text-white hover:border-white/20 transition" href="https://www.instagram.com/cay56f/" target="_blank" rel="noopener noreferrer" title="Instagram"><Instagram className="w-4 h-4" /></a>
         </div>
       </div>
     </footer>
   );
 };
 
-const AdditionalInfo = () => {
-  const { t } = useTranslation();
-  const certifications = t('additional.certifications.list', { returnObjects: true }) as string[];
-
-  return (
-    <section className="max-w-4xl mx-auto mb-24">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="glass rounded-3xl p-8 border border-white/10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4">
-            <Globe className="w-12 h-12 text-accent-cyan/10 animate-pulse" />
-          </div>
-          <h2 className="text-white text-xl font-bold mb-4">{t('additional.languages.title')}</h2>
-          <div className="flex flex-wrap gap-3">
-            <span className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-slate-300">{t('additional.languages.indonesian')}</span>
-            <span className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-slate-300">{t('additional.languages.english')}</span>
-          </div>
-        </div>
-        
-        <div className="glass rounded-3xl p-8 border border-white/10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4">
-            <Share2 className="w-12 h-12 text-primary/10 animate-pulse" />
-          </div>
-          <h2 className="text-white text-xl font-bold mb-4">{t('additional.certifications.title')}</h2>
-          <div className="space-y-3">
-            {certifications.map((cert, idx) => (
-              <div key={idx} className="flex items-center gap-3 text-slate-300">
-                <div className="w-2 h-2 rounded-full bg-primary"></div>
-                <span className="text-sm">{cert}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 export default function App() {
   const { t } = useTranslation();
+  const [route, setRoute] = useState(window.location.hash);
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(window.location.hash);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
   const rawProjects = t('projects.projects', { returnObjects: true }) as any[];
-  const projects = rawProjects.map((project) => ({
-    ...project,
-    images: getProjectImages(project.title),
-  }));
+  const projects = (Array.isArray(rawProjects) ? rawProjects : []).map((project) => {
+    const customImages = Array.isArray(project.images)
+      ? project.images.filter((img: any) => typeof img === 'string' && img.trim())
+      : [];
+    return {
+      ...project,
+      images: customImages.length > 0 ? customImages : getProjectImages(project.title),
+    };
+  });
 
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
-  const nextProject = () => {
-    setCurrentProjectIndex((prev) => (prev + 1) % projects.length);
-  };
+  useEffect(() => {
+    if (currentProjectIndex >= projects.length) setCurrentProjectIndex(0);
+  }, [projects.length, currentProjectIndex]);
 
-  const prevProject = () => {
-    setCurrentProjectIndex((prev) => (prev - 1 + projects.length) % projects.length);
-  };
+  const adminEnabled = import.meta.env.DEV || import.meta.env.VITE_ENABLE_ADMIN === 'true';
+  if (route === '#admin') {
+    if (!adminEnabled) {
+      return (
+        <div className="min-h-screen bg-site text-slate-100 flex items-center justify-center p-6">
+          <div className="panel rounded-2xl p-8 max-w-md text-center">
+            <h1 className="text-xl font-bold mb-2">Admin tidak tersedia</h1>
+            <p className="text-zinc-400 text-sm mb-4">Dashboard admin dinonaktifkan pada situs produksi.</p>
+            <a href="#" className="inline-flex px-4 py-2 rounded-lg bg-white text-black text-sm font-semibold">Kembali ke Beranda</a>
+          </div>
+        </div>
+      );
+    }
+    return <AdminDashboard />;
+  }
 
-  const goToProject = (index: number) => {
-    setCurrentProjectIndex(index);
-  };
-  const openProjectModal = (project: any) => {
-    setSelectedProject(project);
-    setShowModal(true);
-  };
+  const nextProject = () => setCurrentProjectIndex((prev) => (projects.length ? (prev + 1) % projects.length : 0));
+  const prevProject = () => setCurrentProjectIndex((prev) => (projects.length ? (prev - 1 + projects.length) % projects.length : 0));
+  const goToProject = (index: number) => setCurrentProjectIndex(index);
+  const openProjectModal = (project: any) => { setSelectedProject(project); setShowModal(true); };
+  const closeModal = () => { setShowModal(false); setSelectedProject(null); };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedProject(null);
-  };
+  const featured = projects.length > 0 ? projects[currentProjectIndex] : null;
 
   return (
-    <div className="min-h-screen mesh-bg text-slate-100 font-sans selection:bg-primary/30 overflow-x-hidden">
+    <div className="min-h-screen bg-site text-zinc-100 font-sans selection:bg-primary/25 overflow-x-hidden">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-6 md:px-20">
+      <main>
         <Hero />
-        
         <WorkExperience />
 
-        <section id="projects" className="mb-24">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-white text-3xl font-bold tracking-tight">{t('projects.title')}</h2>
-            <div className="h-px flex-1 mx-8 bg-linear-to-r from-primary/50 via-white/10 to-transparent"></div>
-          </div>
-          
-          <div className="relative max-w-4xl mx-auto">
-            {/* Navigation Buttons */}
-            <button
-              onClick={prevProject}
-              className="absolute left-0 top-1/3 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
-              aria-label="Previous project"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            
-            <button
-              onClick={nextProject}
-              className="absolute right-0 top-1/3 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
-              aria-label="Next project"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+        <section id="projects" className="py-16 md:py-24">
+          <div className="max-w-6xl mx-auto px-5 md:px-8">
+            <SectionHeading eyebrow="Selected Work" title={t('projects.title')} />
+            {projects.length > 0 && featured ? (
+              <div className="space-y-6">
+                <div className="relative">
+                  <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-4 md:gap-5 items-stretch">
+                    <motion.div key={currentProjectIndex} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="panel rounded-3xl overflow-hidden min-h-[360px] md:min-h-[440px] relative">
+                      <img src={featured.images?.[0] || `https://picsum.photos/seed/${currentProjectIndex}/1200/800`} alt={featured.title} className="absolute inset-0 w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-[#0a0a0b]/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                        <span className="inline-block px-3 py-1 rounded-full bg-black/40 backdrop-blur border border-white/10 text-[11px] font-medium text-zinc-200 mb-3">{featured.category}</span>
+                        <h3 className="font-display text-2xl md:text-3xl font-semibold text-white mb-3">{featured.title}</h3>
+                        <p className="text-zinc-300 text-sm md:text-base line-clamp-2 max-w-2xl mb-4">{featured.description}</p>
+                        <div className="flex flex-wrap gap-2">
+                          <button onClick={() => openProjectModal(featured)} className="inline-flex items-center gap-1.5 h-10 px-4 rounded-full bg-white text-black text-sm font-semibold hover:bg-primary transition-colors">{t('projects.viewProject')} <ArrowUpRight className="w-4 h-4" /></button>
+                          {featured.url && <a href={featured.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 h-10 px-4 rounded-full border border-white/15 bg-black/20 backdrop-blur text-sm text-white hover:bg-white/10 transition">{t('projects.openUrl')} <ExternalLink className="w-4 h-4" /></a>}
+                        </div>
+                      </div>
+                    </motion.div>
 
-            {/* Project Display */}
-            <div className="overflow-hidden rounded-3xl">
-              <motion.div
-                key={currentProjectIndex}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="w-full"
-              >
-                <ProjectCard
-                  title={projects[currentProjectIndex].title}
-                  category={projects[currentProjectIndex].category}
-                  description={projects[currentProjectIndex].description}
-                  image={projects[currentProjectIndex].images?.[0] ?? `https://picsum.photos/seed/project${currentProjectIndex + 1}/800/500`}
-                  colorClass={currentProjectIndex % 2 === 0 ? "cyan" : "violet"}
-                  delay={0.1}
-                  onViewProject={() => openProjectModal(projects[currentProjectIndex])}
-                  projectUrl={projects[currentProjectIndex].url}
-                />
-              </motion.div>
-            </div>
-
-            {/* Dots Indicator */}
-            <div className="flex justify-center mt-6 space-x-3">
-              {projects.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToProject(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentProjectIndex
-                      ? 'bg-primary scale-125 shadow-lg shadow-primary/50'
-                      : 'bg-white/30 hover:bg-white/50'
-                  }`}
-                  aria-label={`Go to project ${index + 1}`}
-                />
-              ))}
-            </div>
-
-            {/* Project Counter */}
-            <div className="text-center mt-4">
-              <span className="text-slate-400 text-sm">
-                {currentProjectIndex + 1} / {projects.length}
-              </span>
-            </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 md:gap-5 content-start">
+                      {projects.filter((_, i) => i !== currentProjectIndex).slice(0, 3).map((p) => (
+                        <button key={p.title + p.url} onClick={() => goToProject(projects.indexOf(p))} className="panel panel-hover rounded-2xl p-4 text-left flex gap-4 items-center">
+                          <div className="w-20 h-20 rounded-xl overflow-hidden bg-zinc-900 shrink-0 border border-white/8">
+                            {p.images?.[0] ? <img src={p.images[0]} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-zinc-600"><Layers className="w-5 h-5"/></div>}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-[11px] uppercase tracking-wider text-primary mb-1">{p.category}</p>
+                            <h4 className="font-display font-semibold text-white truncate">{p.title}</h4>
+                            <p className="text-xs text-zinc-400 mt-1 line-clamp-2">{p.description}</p>
+                          </div>
+                        </button>
+                      ))}
+                      <div className="panel rounded-2xl p-4 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <button onClick={prevProject} className="w-10 h-10 rounded-full border border-white/10 bg-white/[0.02] flex items-center justify-center hover:bg-white/5 transition" aria-label="Previous"><ChevronLeft className="w-4 h-4" /></button>
+                          <button onClick={nextProject} className="w-10 h-10 rounded-full border border-white/10 bg-white/[0.02] flex items-center justify-center hover:bg-white/5 transition" aria-label="Next"><ChevronRight className="w-4 h-4" /></button>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {projects.map((_, index) => (
+                            <button key={index} onClick={() => goToProject(index)} className={`h-1.5 rounded-full transition-all ${index === currentProjectIndex ? 'w-6 bg-primary' : 'w-1.5 bg-white/20 hover:bg-white/40'}`} aria-label={`Go to project ${index + 1}`} />
+                          ))}
+                        </div>
+                        <span className="text-xs text-zinc-500">{currentProjectIndex + 1} / {projects.length}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="panel rounded-3xl p-10 text-center text-zinc-400">Belum ada project.</div>
+            )}
           </div>
         </section>
 
         <Skills />
-
         <Education />
-
         <AdditionalInfo />
       </main>
       <Footer />
 
-      {/* Project Modal */}
       {showModal && selectedProject && (
         <ProjectModal project={selectedProject} onClose={closeModal} />
       )}

@@ -3,13 +3,14 @@ import { initReactI18next } from 'react-i18next';
 
 import enTranslations from './locales/en.json';
 import idTranslations from './locales/id.json';
+import { getContent } from './utils/contentStore';
 
 const resources = {
   en: {
-    translation: enTranslations,
+    translation: getContent('en') || enTranslations,
   },
   id: {
-    translation: idTranslations,
+    translation: getContent('id') || idTranslations,
   },
 };
 
